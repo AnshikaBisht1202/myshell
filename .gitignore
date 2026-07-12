@@ -1,0 +1,6 @@
+src/myshell
+
+*.out
+*.o
+
+build/

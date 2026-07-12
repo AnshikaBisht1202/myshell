@@ -43,11 +43,36 @@ setbuf(stdout, NULL);
       return 0;
     }
 
+    else if (strcmp(argv[0], "pwd") == 0) {
+      char cwd[1024];
+      getcwd(cwd, sizeof(cwd));
+      printf("%s\n", cwd);
+    }
+
+    else if (strcmp(argv[0], "cd") == 0) {
+      if (argc < 2) {
+          printf("cd: missing argument\n");
+      }
+      else {
+        if (strcmp(argv[1], "~") == 0) {
+            char *home = getenv("HOME");
+
+            if (home != NULL) {
+                chdir(home);
+            }
+        }
+        else if (chdir(argv[1]) != 0) {
+              perror("cd: /non-existing-directory");
+          }
+          
+      }
+    }
+
     else if (strcmp(argv[0], "type") == 0) {
       if (argc < 2) {
         printf("type: missing argument\n");
       } 
-      else if (strcmp(argv[1], "echo") == 0 || strcmp(argv[1], "exit") == 0 || strcmp(argv[1], "type") == 0) {
+      else if (strcmp(argv[1], "echo") == 0 || strcmp(argv[1], "exit") == 0 || strcmp(argv[1], "type") == 0 || strcmp(argv[1], "pwd") == 0 || strcmp(argv[1], "cd") == 0) {
         printf("%s is a shell builtin\n", argv[1]);
       }
       else {
